@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biomedical Engineering Portfolio</title>
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --radius: 12px;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+      --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding: 40px 20px; }
+
+    header { max-width: 1100px; margin: 0 auto 40px; text-align: center; }
+    header h1 { font-size: 2.5rem; color: #0f172a; margin-bottom: 8px; }
+    header p { color: var(--text-muted); font-size: 1.1rem; }
+
+    /* Grid Layout */
+    .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; max-width: 1100px; margin: 0 auto; }
+    .card { background: var(--card-bg); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: transform 0.25s ease, box-shadow 0.25s ease; cursor: pointer; border: 1px solid #e2e8f0; }
+    .card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); }
+    .card-image { width: 100%; height: 220px; object-fit: cover; display: block; border-bottom: 1px solid #f1f5f9; }
+    .card-content { padding: 20px; }
+    .card-title { font-size: 1.25rem; font-weight: 700; color: #0f172a; margin-bottom: 10px; }
+    .card-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .tag { background: #e0f2fe; color: #0369a1; font-size: 0.75rem; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+
+    /* Modal System */
+    .modal { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(4px); z-index: 1000; justify-content: center; align-items: center; padding: 20px; opacity: 0; transition: opacity 0.25s ease; }
+    .modal.active { display: flex; opacity: 1; }
+    .modal-card { background: var(--card-bg); width: 100%; max-width: 650px; border-radius: var(--radius); overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); transform: translateY(20px); transition: transform 0.25s ease; position: relative; max-height: 90vh; overflow-y: auto; }
+    .modal.active .modal-card { transform: translateY(0); }
+    .modal-image { width: 100%; height: 280px; object-fit: cover; }
+    .modal-body { padding: 30px; }
+    .modal-title { font-size: 1.75rem; margin-bottom: 12px; }
+    .modal-description { color: var(--text-muted); margin-bottom: 20px; }
+    .modal-details { border-top: 1px solid #e2e8f0; padding-top: 15px; margin-bottom: 20px; }
+    .close-btn { position: absolute; top: 15px; right: 20px; font-size: 28px; background: rgba(255,255,255,0.8); border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; }
+    .btn { display: inline-block; background: var(--primary); color: #fff; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 600; transition: background 0.2s; }
+    .btn:hover { background: var(--primary-hover); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>BME Project Portfolio</h1>
+    <p>Biomedical Engineering & Hardware Prototyping Showcase</p>
+  </header>
+
+  <main class="portfolio-grid">
+    <!-- Card 1 -->
+    <article class="card" onclick="openModal('project-1')">
+      <img src="https://via.placeholder.com/600x400" alt="Myoelectric Prosthetic Hand" class="card-image">
+      <div class="card-content">
+        <h2 class="card-title">Myoelectric Prosthetic Hand</h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">3D printed limb driven by surface EMG signals and servo control.</p>
+        <div class="card-tags">
+          <span class="tag">SolidWorks</span>
+          <span class="tag">Arduino</span>
+          <span class="tag">EMG Signal</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 2 -->
+    <article class="card" onclick="openModal('project-2')">
+      <img src="https://via.placeholder.com/600x400" alt="ECG Signal Processing" class="card-image">
+      <div class="card-content">
+        <h2 class="card-title">ECG Filtering Pipeline</h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Digital signal processing pipeline isolating QRS complexes from noise.</p>
+        <div class="card-tags">
+          <span class="tag">MATLAB</span>
+          <span class="tag">DSP</span>
+          <span class="tag">Bioinstrumentation</span>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <!-- Modal 1 -->
+  <div id="project-1" class="modal" onclick="closeModalOnOuterClick(event, 'project-1')">
+    <div class="modal-card">
+      <button class="close-btn" onclick="closeModal('project-1')">&times;</button>
+      <img src="https://via.placeholder.com/600x400" alt="Myoelectric Prosthetic Hand" class="modal-image">
+      <div class="modal-body">
+        <h2 class="modal-title">Myoelectric Prosthetic Hand</h2>
+        <p class="modal-description">Designed an affordable, customizable upper-limb prosthetic for amputee rehabilitation. The design uses surface EMG electrodes to measure muscle activity, mapped via microcontrollers to actuator motion.</p>
+        <div class="modal-details">
+          <p><strong>Key Highlights:</strong></p>
+          <ul style="margin-left: 20px; color: var(--text-muted); font-size: 0.95rem;">
+            <li>Custom 3D-printed chassis using PETG filament.</li>
+            <li>Real-time notch and bandpass filtering on raw EMG data.</li>
+            <li>Multi-grip pattern state engine.</li>
+          </ul>
+        </div>
+        <a href="https://github.com/yourusername" target="_blank" class="btn">View Repository & CAD Files</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2 -->
+  <div id="project-2" class="modal" onclick="closeModalOnOuterClick(event, 'project-2')">
+    <div class="modal-card">
+      <button class="close-btn" onclick="closeModal('project-2')">&times;</button>
+      <img src="https://via.placeholder.com/600x400" alt="ECG Signal Processing" class="modal-image">
+      <div class="modal-body">
+        <h2 class="modal-title">ECG Filtering Pipeline</h2>
+        <p class="modal-description">Engineered a robust MATLAB pipeline designed to eliminate 60Hz powerline interference and baseline wander from continuous electrocardiogram datasets.</p>
+        <div class="modal-details">
+          <p><strong>Key Highlights:</strong></p>
+          <ul style="margin-left: 20px; color: var(--text-muted); font-size: 0.95rem;">
+            <li>Implemented Pan-Tompkins algorithm for R-peak detection.</li>
+            <li>Achieved 98.2% signal retention across 50 test sets.</li>
+          </ul>
+        </div>
+        <a href="https://github.com/yourusername" target="_blank" class="btn">View Code on GitHub</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openModal(id) {
+      document.getElementById(id).classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+
+    function closeModalOnOuterClick(event, id) {
+      if (event.target === document.getElementById(id)) {
+        closeModal(id);
+      }
+    }
+  </script>
+</body>
+</html>
